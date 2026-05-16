@@ -1,12 +1,15 @@
 import { clerkMiddleware } from "@clerk/nextjs/server";
 
-export const proxy = clerkMiddleware();
+const authProxy = clerkMiddleware();
+
+// Explicitly naming the export 'proxy' as required by Next.js 16
+export default function proxy(req: any, ev: any) {
+  return authProxy(req, ev);
+}
 
 export const config = {
   matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
     '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-    // Always run for API routes
     '/(api|trpc)(.*)',
   ],
 };
