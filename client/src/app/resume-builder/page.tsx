@@ -24,7 +24,7 @@ export default function ResumeBuilder() {
   const componentRef = useRef<HTMLDivElement>(null);
 
   const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
+    contentRef: componentRef,
   });
 
   const updatePersonal = (field: string, value: string) => {
