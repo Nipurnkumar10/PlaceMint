@@ -58,7 +58,7 @@ const Navbar = () => {
                             </>
                         )}
                         {isLoaded && isSignedIn && (
-                            <UserButton afterSignOutUrl="/" />
+                            <UserButton />
                         )}
                     </div>
                 </div>
@@ -100,7 +100,7 @@ const Navbar = () => {
                         )}
                         {isLoaded && isSignedIn && (
                             <div className="flex justify-center">
-                                <UserButton afterSignOutUrl="/" />
+                                <UserButton />
                             </div>
                         )}
                     </div>
