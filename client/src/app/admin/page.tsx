@@ -1,28 +1,103 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useUser } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
 import { 
   Plus, 
   Settings, 
   Users, 
   Database, 
   Video, 
-  FileText,
   BarChart,
   ShieldCheck,
   Search,
-  MoreVertical
+  MoreVertical,
+  CheckCircle,
+  XCircle,
+  Trash2,
+  FileText
 } from 'lucide-react';
 
+const ADMIN_EMAIL = 'nipurnkumar295@gmail.com';
+
 export default function AdminPanel() {
-  const [activeTab, setActiveTab] = useState('questions');
+  const { user, isLoaded } = useUser();
+  const router = useRouter();
+  const [activeTab, setActiveTab] = useState('experiences');
+  const [experiences, setExperiences] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const tabs = [
     { id: 'analytics', label: 'Analytics', icon: <BarChart size={20} /> },
     { id: 'questions', label: 'DSA Questions', icon: <Database size={20} /> },
     { id: 'videos', label: 'Videos', icon: <Video size={20} /> },
+    { id: 'experiences', label: 'Experiences', icon: <FileText size={20} /> },
     { id: 'users', label: 'Users', icon: <Users size={20} /> },
   ];
+
+  useEffect(() => {
+    if (isLoaded && (!user || user.emailAddresses[0].emailAddress !== ADMIN_EMAIL)) {
+      router.push('/');
+    }
+  }, [user, isLoaded, router]);
+
+  useEffect(() => {
+    if (activeTab === 'experiences' && user?.emailAddresses[0].emailAddress === ADMIN_EMAIL) {
+      fetchExperiences();
+    }
+  }, [activeTab, user]);
+
+  const fetchExperiences = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('https://placemint-backend-lsxb.onrender.com/api/experiences/all');
+      const data = await res.json();
+      setExperiences(data);
+    } catch (err) {
+      console.error("Failed to fetch experiences", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const updateStatus = async (id: string, status: string) => {
+    try {
+      await fetch(`https://placemint-backend-lsxb.onrender.com/api/experiences/${id}/status`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status })
+      });
+      fetchExperiences();
+    } catch (err) {
+      console.error("Failed to update status", err);
+    }
+  };
+
+  const deleteExperience = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this experience?')) return;
+    try {
+      await fetch(`https://placemint-backend-lsxb.onrender.com/api/experiences/${id}`, {
+        method: 'DELETE'
+      });
+      fetchExperiences();
+    } catch (err) {
+      console.error("Failed to delete experience", err);
+    }
+  };
+
+  if (!isLoaded) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (!user || user.emailAddresses[0].emailAddress !== ADMIN_EMAIL) {
+    return (
+      <div className="min-h-screen flex items-center justify-center text-center px-4">
+        <div>
+          <ShieldCheck size={64} className="mx-auto text-red-500 mb-6" />
+          <h1 className="text-4xl font-black mb-4">Unauthorized Access</h1>
+          <p className="text-gray-400">You do not have permission to view this page.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-6 py-8">
@@ -65,64 +140,78 @@ export default function AdminPanel() {
 
         {/* Content Area */}
         <div className="lg:col-span-3 space-y-8">
-          {/* Quick Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              { label: 'Total Users', value: '1,284', change: '+12%', color: 'text-blue-500' },
-              { label: 'Questions', value: '450', change: '+5', color: 'text-green-500' },
-              { label: 'Avg Time', value: '42m', change: '-2%', color: 'text-purple-500' },
-            ].map((stat, i) => (
-              <div key={i} className="glass p-6 rounded-3xl">
-                <p className="text-sm text-gray-400 mb-1">{stat.label}</p>
-                <div className="flex items-end justify-between">
-                  <h3 className="text-3xl font-black">{stat.value}</h3>
-                  <span className={`text-xs font-bold ${stat.color}`}>{stat.change}</span>
-                </div>
+          {activeTab === 'experiences' ? (
+            <div className="glass rounded-[2rem] overflow-hidden">
+              <div className="p-8 border-b border-white/5 flex justify-between items-center">
+                <h3 className="text-xl font-bold">Interview Experiences Moderation</h3>
+                <button onClick={fetchExperiences} className="text-sm bg-white/5 hover:bg-white/10 px-4 py-2 rounded-xl transition-colors">
+                  Refresh
+                </button>
               </div>
-            ))}
-          </div>
-
-          {/* Table Area */}
-          <div className="glass rounded-[2rem] overflow-hidden">
-            <div className="p-8 border-b border-white/5 flex justify-between items-center">
-              <h3 className="text-xl font-bold">Recent {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}</h3>
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
-                <input 
-                  type="text" 
-                  placeholder="Filter..."
-                  className="bg-white/5 border border-white/10 rounded-xl pl-10 pr-4 py-2 text-sm focus:outline-none"
-                />
+              
+              <div className="overflow-x-auto">
+                {loading ? (
+                  <div className="p-8 text-center text-gray-400">Loading experiences...</div>
+                ) : experiences.length === 0 ? (
+                  <div className="p-8 text-center text-gray-400">No experiences found.</div>
+                ) : (
+                  <table className="w-full text-left">
+                    <thead>
+                      <tr className="text-gray-500 text-sm border-b border-white/5 bg-black/20">
+                        <th className="px-6 py-4 font-semibold">Student</th>
+                        <th className="px-6 py-4 font-semibold">Role & Company</th>
+                        <th className="px-6 py-4 font-semibold">Status</th>
+                        <th className="px-6 py-4 font-semibold">Date Submitted</th>
+                        <th className="px-6 py-4 font-semibold text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/5">
+                      {experiences.map((exp) => (
+                        <tr key={exp._id} className="hover:bg-white/5 transition-colors group">
+                          <td className="px-6 py-4 font-bold">{exp.studentName}</td>
+                          <td className="px-6 py-4 text-sm text-gray-300">
+                            <span className="font-semibold text-white">{exp.role}</span> <br/>
+                            <span className="text-xs text-primary">{exp.company}</span>
+                          </td>
+                          <td className="px-6 py-4">
+                            <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase ${
+                              exp.status === 'approved' ? 'bg-green-500/10 text-green-500' :
+                              exp.status === 'rejected' ? 'bg-red-500/10 text-red-500' :
+                              'bg-yellow-500/10 text-yellow-500'
+                            }`}>
+                              {exp.status}
+                            </span>
+                          </td>
+                          <td className="px-6 py-4 text-xs text-gray-400">
+                            {new Date(exp.createdAt).toLocaleDateString()}
+                          </td>
+                          <td className="px-6 py-4 text-right flex items-center justify-end gap-2">
+                            {exp.status !== 'approved' && (
+                              <button onClick={() => updateStatus(exp._id, 'approved')} title="Approve" className="p-2 rounded-lg bg-green-500/10 hover:bg-green-500/20 text-green-500 transition-colors">
+                                <CheckCircle size={18} />
+                              </button>
+                            )}
+                            {exp.status !== 'rejected' && (
+                              <button onClick={() => updateStatus(exp._id, 'rejected')} title="Reject" className="p-2 rounded-lg bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-500 transition-colors">
+                                <XCircle size={18} />
+                              </button>
+                            )}
+                            <button onClick={() => deleteExperience(exp._id)} title="Delete" className="p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-500 transition-colors">
+                              <Trash2 size={18} />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
               </div>
             </div>
-            
-            <div className="overflow-x-auto">
-              <table className="w-full text-left">
-                <thead>
-                  <tr className="text-gray-500 text-sm border-b border-white/5">
-                    <th className="px-8 py-4 font-semibold">Title / Name</th>
-                    <th className="px-8 py-4 font-semibold">Status</th>
-                    <th className="px-8 py-4 font-semibold">Date</th>
-                    <th className="px-8 py-4 font-semibold text-right">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-white/5">
-                  {[1, 2, 3, 4, 5].map((item) => (
-                    <tr key={item} className="hover:bg-white/5 transition-colors group">
-                      <td className="px-8 py-4 font-bold">Example Item #{item}</td>
-                      <td className="px-8 py-4">
-                        <span className="px-3 py-1 rounded-full bg-green-500/10 text-green-500 text-[10px] font-black uppercase">Active</span>
-                      </td>
-                      <td className="px-8 py-4 text-sm text-gray-400">May 15, 2024</td>
-                      <td className="px-8 py-4 text-right">
-                        <button className="p-2 hover:text-white text-gray-500 transition-colors"><MoreVertical size={18} /></button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+          ) : (
+            <div className="glass p-12 text-center rounded-[2rem] text-gray-400">
+              Select the "Experiences" tab to moderate user submissions.
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
