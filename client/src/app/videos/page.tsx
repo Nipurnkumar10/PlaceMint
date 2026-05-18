@@ -16,12 +16,12 @@ import {
 const companies = ['All', 'Google', 'Amazon', 'Microsoft', 'TCS', 'Infosys', 'Accenture'];
 
 const mockVideos = [
-  { id: 1, title: 'Amazon SDE Interview Experience | My Story', company: 'Amazon', role: 'SDE-1', views: '12K', date: '2 days ago', thumbnail: 'https://images.unsplash.com/photo-1523240715632-d984bb4b9106?w=800&auto=format&fit=crop&q=60' },
-  { id: 2, title: 'Google Internship Interview Prep Guide', company: 'Google', role: 'SWE Intern', views: '25K', date: '1 week ago', thumbnail: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&auto=format&fit=crop&q=60' },
-  { id: 3, title: 'TCS Ninja vs Digital | Complete Roadmap', company: 'TCS', role: 'System Engineer', views: '8K', date: '3 days ago', thumbnail: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&auto=format&fit=crop&q=60' },
-  { id: 4, title: 'How I Cracked Microsoft (Off-Campus)', company: 'Microsoft', role: 'SDE', views: '42K', date: '1 month ago', thumbnail: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&auto=format&fit=crop&q=60' },
-  { id: 5, title: 'Accenture Cognitive Assessment Strategy', company: 'Accenture', role: 'ASE', views: '15K', date: '5 days ago', thumbnail: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&auto=format&fit=crop&q=60' },
-  { id: 6, title: 'Infosys Certification Exam Tips 2024', company: 'Infosys', role: 'SES', views: '5K', date: '2 weeks ago', thumbnail: 'https://images.unsplash.com/photo-1454165833767-027ffae70c1d?w=800&auto=format&fit=crop&q=60' },
+  { id: 1, title: 'Amazon SDE Interview Experience | My Story', company: 'Amazon', role: 'SDE-1', views: '12K', date: '2 days ago', thumbnail: 'https://images.unsplash.com/photo-1523240715632-d984bb4b9106?w=800&auto=format&fit=crop&q=60', link: 'https://www.youtube.com/results?search_query=Amazon+SDE+Interview+Experience' },
+  { id: 2, title: 'Google Internship Interview Prep Guide', company: 'Google', role: 'SWE Intern', views: '25K', date: '1 week ago', thumbnail: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&auto=format&fit=crop&q=60', link: 'https://www.youtube.com/results?search_query=Google+Internship+Interview+Prep+Guide' },
+  { id: 3, title: 'TCS Ninja vs Digital | Complete Roadmap', company: 'TCS', role: 'System Engineer', views: '8K', date: '3 days ago', thumbnail: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&auto=format&fit=crop&q=60', link: 'https://www.youtube.com/results?search_query=TCS+Ninja+vs+Digital' },
+  { id: 4, title: 'How I Cracked Microsoft (Off-Campus)', company: 'Microsoft', role: 'SDE', views: '42K', date: '1 month ago', thumbnail: 'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&auto=format&fit=crop&q=60', link: 'https://www.youtube.com/results?search_query=How+I+Cracked+Microsoft+Off-Campus' },
+  { id: 5, title: 'Accenture Cognitive Assessment Strategy', company: 'Accenture', role: 'ASE', views: '15K', date: '5 days ago', thumbnail: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&auto=format&fit=crop&q=60', link: 'https://www.youtube.com/results?search_query=Accenture+Cognitive+Assessment+Strategy' },
+  { id: 6, title: 'Infosys Certification Exam Tips 2024', company: 'Infosys', role: 'SES', views: '5K', date: '2 weeks ago', thumbnail: 'https://images.unsplash.com/photo-1454165833767-027ffae70c1d?w=800&auto=format&fit=crop&q=60', link: 'https://www.youtube.com/results?search_query=Infosys+Certification+Exam+Tips' },
 ];
 
 export default function VideosPage() {
@@ -59,9 +59,9 @@ export default function VideosPage() {
           </div>
           <h2 className="text-4xl md:text-5xl font-black mb-4 max-w-3xl leading-tight">Mastering Technical Interviews: The 2024 Strategy Guide</h2>
           <div className="flex items-center gap-6">
-            <button className="bg-white text-black px-8 py-4 rounded-2xl font-bold flex items-center gap-2 hover:scale-105 transition-transform">
+            <a href="https://www.youtube.com/results?search_query=Mastering+Technical+Interviews" target="_blank" rel="noopener noreferrer" className="bg-white text-black px-8 py-4 rounded-2xl font-bold flex items-center gap-2 hover:scale-105 transition-transform">
               <Play fill="black" size={20} /> Watch Now
-            </button>
+            </a>
             <button className="glass p-4 rounded-2xl hover:bg-white/10 transition-colors">
               <Bookmark size={24} />
             </button>
@@ -118,12 +118,12 @@ export default function VideosPage() {
                   alt={video.title}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <a href={video.link} target="_blank" rel="noopener noreferrer" className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                   <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center scale-75 group-hover:scale-100 transition-transform">
                     <Play fill="white" size={24} />
                   </div>
-                </div>
-                <div className="absolute bottom-4 right-4 bg-black/60 backdrop-blur-md px-2 py-1 rounded-md text-[10px] font-bold">
+                </a>
+                <div className="absolute bottom-4 right-4 bg-black/60 backdrop-blur-md px-2 py-1 rounded-md text-[10px] font-bold pointer-events-none">
                   12:45
                 </div>
               </div>
