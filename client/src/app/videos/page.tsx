@@ -163,9 +163,9 @@ export default function VideosPage() {
         <div className="relative z-10">
           <h2 className="text-3xl font-black mb-4">Have an Interview Experience to Share?</h2>
           <p className="text-gray-400 mb-8 max-w-xl mx-auto">Help thousands of students by sharing your interview journey. Get rewarded with badges and XP!</p>
-          <button className="bg-primary px-8 py-4 rounded-2xl font-bold flex items-center gap-2 mx-auto hover:scale-105 transition-transform">
+          <a href="mailto:nipurnkumar295@gmail.com?subject=Interview%20Experience%20Submission" className="bg-primary px-8 py-4 rounded-2xl font-bold flex items-center justify-center gap-2 mx-auto hover:scale-105 transition-transform w-fit text-white">
             Upload Your Experience <ChevronRight size={20} />
-          </button>
+          </a>
         </div>
         <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-primary/10 rounded-full blur-3xl" />
         <div className="absolute -top-24 -right-24 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl" />
