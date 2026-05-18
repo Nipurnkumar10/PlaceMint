@@ -60,9 +60,14 @@ export default function AdminPanel() {
       if (res.ok) {
         const data = await res.json();
         setUsersList(data);
+      } else {
+        const errText = await res.text();
+        console.error("API Error:", res.status, errText);
+        alert(`Error fetching users: ${res.status} ${errText}`);
       }
     } catch (err) {
       console.error("Failed to fetch users", err);
+      alert("Network error: Failed to fetch users");
     } finally {
       setLoading(false);
     }
