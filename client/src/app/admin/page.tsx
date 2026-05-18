@@ -26,6 +26,7 @@ export default function AdminPanel() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('experiences');
   const [experiences, setExperiences] = useState<any[]>([]);
+  const [usersList, setUsersList] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
   const tabs = [
@@ -43,10 +44,29 @@ export default function AdminPanel() {
   }, [user, isLoaded, router]);
 
   useEffect(() => {
-    if (activeTab === 'experiences' && user?.emailAddresses[0].emailAddress === ADMIN_EMAIL) {
-      fetchExperiences();
+    if (user?.emailAddresses[0].emailAddress === ADMIN_EMAIL) {
+      if (activeTab === 'experiences') {
+        fetchExperiences();
+      } else if (activeTab === 'users') {
+        fetchUsers();
+      }
     }
   }, [activeTab, user]);
+
+  const fetchUsers = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/admin/users');
+      if (res.ok) {
+        const data = await res.json();
+        setUsersList(data);
+      }
+    } catch (err) {
+      console.error("Failed to fetch users", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const fetchExperiences = async () => {
     setLoading(true);
@@ -207,9 +227,54 @@ export default function AdminPanel() {
                 )}
               </div>
             </div>
+          ) : activeTab === 'users' ? (
+            <div className="glass rounded-[2rem] overflow-hidden">
+              <div className="p-8 border-b border-white/5 flex justify-between items-center">
+                <h3 className="text-xl font-bold">Registered Users</h3>
+                <button onClick={fetchUsers} className="text-sm bg-white/5 hover:bg-white/10 px-4 py-2 rounded-xl transition-colors">
+                  Refresh
+                </button>
+              </div>
+              
+              <div className="overflow-x-auto">
+                {loading ? (
+                  <div className="p-8 text-center text-gray-400">Loading users...</div>
+                ) : usersList.length === 0 ? (
+                  <div className="p-8 text-center text-gray-400">No users found.</div>
+                ) : (
+                  <table className="w-full text-left">
+                    <thead>
+                      <tr className="text-gray-500 text-sm border-b border-white/5 bg-black/20">
+                        <th className="px-6 py-4 font-semibold">User</th>
+                        <th className="px-6 py-4 font-semibold">Email</th>
+                        <th className="px-6 py-4 font-semibold">Joined Date</th>
+                        <th className="px-6 py-4 font-semibold">Last Login</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/5">
+                      {usersList.map((u) => (
+                        <tr key={u.id} className="hover:bg-white/5 transition-colors group">
+                          <td className="px-6 py-4 flex items-center gap-3">
+                            <img src={u.imageUrl} alt="Avatar" className="w-8 h-8 rounded-full border border-white/10" />
+                            <span className="font-bold">{u.firstName} {u.lastName}</span>
+                          </td>
+                          <td className="px-6 py-4 text-sm text-gray-300">{u.email}</td>
+                          <td className="px-6 py-4 text-xs text-gray-400">
+                            {new Date(u.createdAt).toLocaleDateString()}
+                          </td>
+                          <td className="px-6 py-4 text-xs text-gray-400">
+                            {u.lastSignInAt ? new Date(u.lastSignInAt).toLocaleString() : 'Never'}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+              </div>
+            </div>
           ) : (
             <div className="glass p-12 text-center rounded-[2rem] text-gray-400">
-              Select the "Experiences" tab to moderate user submissions.
+              Select the "Experiences" or "Users" tab to view data.
             </div>
           )}
         </div>
