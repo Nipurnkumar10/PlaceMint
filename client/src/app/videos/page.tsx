@@ -1,6 +1,7 @@
 "use client";
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import UploadExperienceModal from '@/components/UploadExperienceModal';
 import { 
   Play, 
   Search, 
@@ -30,6 +31,7 @@ const mockVideos = [
 export default function VideosPage() {
   const [selectedCompany, setSelectedCompany] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const filteredVideos = mockVideos.filter(v => {
     const companyMatch = selectedCompany === 'All' || v.company === selectedCompany;
@@ -163,13 +165,15 @@ export default function VideosPage() {
         <div className="relative z-10">
           <h2 className="text-3xl font-black mb-4">Have an Interview Experience to Share?</h2>
           <p className="text-gray-400 mb-8 max-w-xl mx-auto">Help thousands of students by sharing your interview journey. Get rewarded with badges and XP!</p>
-          <a href="mailto:submissions@placemint.com?subject=Interview%20Experience%20Submission" className="bg-primary px-8 py-4 rounded-2xl font-bold flex items-center justify-center gap-2 mx-auto hover:scale-105 transition-transform w-fit text-white">
+          <button onClick={() => setIsModalOpen(true)} className="bg-primary px-8 py-4 rounded-2xl font-bold flex items-center justify-center gap-2 mx-auto hover:scale-105 transition-transform w-fit text-white">
             Upload Your Experience <ChevronRight size={20} />
-          </a>
+          </button>
         </div>
         <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-primary/10 rounded-full blur-3xl" />
         <div className="absolute -top-24 -right-24 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl" />
       </div>
+
+      <UploadExperienceModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 }
