@@ -58,15 +58,18 @@ export default function UploadExperienceModal({ isOpen, onClose }: UploadExperie
     setError('');
 
     try {
-      const payload = {
+      const payload: any = {
         userId: user.id, // Using Clerk ID
         studentName: formData.studentName || 'Anonymous',
         company: formData.company,
         role: formData.role,
-        dateOfInterview: formData.dateOfInterview,
         rounds: formData.rounds.filter(r => r.roundName || r.details),
         tips: formData.tips.filter(t => t.trim() !== '')
       };
+
+      if (formData.dateOfInterview) {
+        payload.dateOfInterview = formData.dateOfInterview;
+      }
 
       const res = await fetch('https://placemint-backend-lsxb.onrender.com/api/experiences', {
         method: 'POST',
