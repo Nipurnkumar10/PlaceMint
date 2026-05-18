@@ -17,12 +17,12 @@ const categories = ['All', 'Arrays', 'Strings', 'Linked Lists', 'Trees', 'Graphs
 const difficulties = ['All', 'Easy', 'Medium', 'Hard'];
 
 const mockQuestions = [
-  { id: 1, title: 'Two Sum', difficulty: 'Easy', category: 'Arrays', companies: ['Amazon', 'Google'], solved: false },
-  { id: 2, title: 'Longest Palindromic Substring', difficulty: 'Medium', category: 'Strings', companies: ['Microsoft', 'Amazon'], solved: false },
-  { id: 3, title: 'Merge k Sorted Lists', difficulty: 'Hard', category: 'Linked Lists', companies: ['Google', 'Facebook'], solved: false },
-  { id: 4, title: 'Validate Binary Search Tree', difficulty: 'Medium', category: 'Trees', companies: ['Amazon', 'Apple'], solved: false },
-  { id: 5, title: 'Number of Islands', difficulty: 'Medium', category: 'Graphs', companies: ['Google', 'Bloomberg'], solved: false },
-  { id: 6, title: 'Climbing Stairs', difficulty: 'Easy', category: 'DP', companies: ['Adobe', 'Goldman Sachs'], solved: false },
+  { id: 1, title: 'Two Sum', difficulty: 'Easy', category: 'Arrays', companies: ['Amazon', 'Google'], solved: false, link: 'https://leetcode.com/problems/two-sum/' },
+  { id: 2, title: 'Longest Palindromic Substring', difficulty: 'Medium', category: 'Strings', companies: ['Microsoft', 'Amazon'], solved: false, link: 'https://leetcode.com/problems/longest-palindromic-substring/' },
+  { id: 3, title: 'Merge k Sorted Lists', difficulty: 'Hard', category: 'Linked Lists', companies: ['Google', 'Facebook'], solved: false, link: 'https://leetcode.com/problems/merge-k-sorted-lists/' },
+  { id: 4, title: 'Validate Binary Search Tree', difficulty: 'Medium', category: 'Trees', companies: ['Amazon', 'Apple'], solved: false, link: 'https://leetcode.com/problems/validate-binary-search-tree/' },
+  { id: 5, title: 'Number of Islands', difficulty: 'Medium', category: 'Graphs', companies: ['Google', 'Bloomberg'], solved: false, link: 'https://leetcode.com/problems/number-of-islands/' },
+  { id: 6, title: 'Climbing Stairs', difficulty: 'Easy', category: 'DP', companies: ['Adobe', 'Goldman Sachs'], solved: false, link: 'https://leetcode.com/problems/climbing-stairs/' },
 ];
 
 export default function DSAPage() {
@@ -157,9 +157,9 @@ export default function DSAPage() {
                   <button className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-gray-400 transition-all">
                     <MessageSquare size={18} />
                   </button>
-                  <button className="p-2 rounded-xl bg-primary/10 hover:bg-primary/20 text-primary transition-all">
+                  <a href={q.link} target="_blank" rel="noopener noreferrer" className="p-2 rounded-xl bg-primary/10 hover:bg-primary/20 text-primary transition-all flex items-center justify-center">
                     <ExternalLink size={18} />
-                  </button>
+                  </a>
                 </div>
               </div>
             </motion.div>
