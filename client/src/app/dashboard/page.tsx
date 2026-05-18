@@ -36,10 +36,10 @@ ChartJS.register(
 
 export default function Dashboard() {
   const stats = [
-    { label: 'Daily Streak', value: '12 Days', icon: <Flame className="text-orange-500" />, color: 'bg-orange-500/10' },
-    { label: 'Solved', value: '142', icon: <CheckCircle2 className="text-green-500" />, color: 'bg-green-500/10' },
-    { label: 'Avg Score', value: '85%', icon: <Star className="text-yellow-500" />, color: 'bg-yellow-500/10' },
-    { label: 'XP Points', value: '2,450', icon: <Trophy className="text-blue-500" />, color: 'bg-blue-500/10' },
+    { label: 'Daily Streak', value: '0 Days', icon: <Flame className="text-orange-500" />, color: 'bg-orange-500/10' },
+    { label: 'Solved', value: '0', icon: <CheckCircle2 className="text-green-500" />, color: 'bg-green-500/10' },
+    { label: 'Avg Score', value: '0%', icon: <Star className="text-yellow-500" />, color: 'bg-yellow-500/10' },
+    { label: 'XP Points', value: '0', icon: <Trophy className="text-blue-500" />, color: 'bg-blue-500/10' },
   ];
 
   const chartData = {
@@ -48,7 +48,7 @@ export default function Dashboard() {
       {
         fill: true,
         label: 'Questions Solved',
-        data: [5, 8, 4, 12, 15, 6, 9],
+        data: [0, 0, 0, 0, 0, 0, 0],
         borderColor: '#6366f1',
         backgroundColor: 'rgba(99, 102, 241, 0.1)',
         tension: 0.4,
@@ -143,30 +143,13 @@ export default function Dashboard() {
       <div className="mt-12">
         <h3 className="text-2xl font-bold mb-6">Recent Activity</h3>
         <div className="grid grid-cols-1 gap-4">
-          {[
-            { task: 'Solved "Reverse Linked List"', type: 'DSA', time: '2 hours ago', icon: <CheckCircle2 className="text-green-500" size={18} /> },
-            { task: 'Completed "Logical Reasoning Quiz"', type: 'Aptitude', time: '5 hours ago', icon: <Clock className="text-blue-500" size={18} /> },
-            { task: 'Saved "Amazon SDE Roadmap"', type: 'Roadmap', time: 'Yesterday', icon: <BookMarked className="text-purple-500" size={18} /> },
-          ].map((activity, i) => (
-            <motion.div 
-              key={i}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="glass p-4 rounded-2xl flex items-center justify-between hover:bg-white/5 transition-colors"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
-                  {activity.icon}
-                </div>
-                <div>
-                  <h4 className="font-semibold text-sm">{activity.task}</h4>
-                  <p className="text-xs text-gray-400">{activity.type}</p>
-                </div>
-              </div>
-              <span className="text-xs text-gray-500">{activity.time}</span>
-            </motion.div>
-          ))}
+          <div className="glass p-8 rounded-2xl flex flex-col items-center justify-center text-center">
+            <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mb-4">
+              <Trophy className="text-gray-500" size={32} />
+            </div>
+            <h4 className="font-semibold text-lg mb-2">No Activity Yet</h4>
+            <p className="text-sm text-gray-400">Your recent activity will appear here once you start solving challenges.</p>
+          </div>
         </div>
       </div>
     </div>
