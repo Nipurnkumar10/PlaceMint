@@ -17,12 +17,12 @@ const categories = ['All', 'Arrays', 'Strings', 'Linked Lists', 'Trees', 'Graphs
 const difficulties = ['All', 'Easy', 'Medium', 'Hard'];
 
 const mockQuestions = [
-  { id: 1, title: 'Two Sum', difficulty: 'Easy', category: 'Arrays', companies: ['Amazon', 'Google'], solved: true },
+  { id: 1, title: 'Two Sum', difficulty: 'Easy', category: 'Arrays', companies: ['Amazon', 'Google'], solved: false },
   { id: 2, title: 'Longest Palindromic Substring', difficulty: 'Medium', category: 'Strings', companies: ['Microsoft', 'Amazon'], solved: false },
   { id: 3, title: 'Merge k Sorted Lists', difficulty: 'Hard', category: 'Linked Lists', companies: ['Google', 'Facebook'], solved: false },
-  { id: 4, title: 'Validate Binary Search Tree', difficulty: 'Medium', category: 'Trees', companies: ['Amazon', 'Apple'], solved: true },
+  { id: 4, title: 'Validate Binary Search Tree', difficulty: 'Medium', category: 'Trees', companies: ['Amazon', 'Apple'], solved: false },
   { id: 5, title: 'Number of Islands', difficulty: 'Medium', category: 'Graphs', companies: ['Google', 'Bloomberg'], solved: false },
-  { id: 6, title: 'Climbing Stairs', difficulty: 'Easy', category: 'DP', companies: ['Adobe', 'Goldman Sachs'], solved: true },
+  { id: 6, title: 'Climbing Stairs', difficulty: 'Easy', category: 'DP', companies: ['Adobe', 'Goldman Sachs'], solved: false },
 ];
 
 export default function DSAPage() {
@@ -103,12 +103,12 @@ export default function DSAPage() {
       <div className="glass p-6 rounded-3xl mb-12">
         <div className="flex justify-between items-center mb-3">
           <span className="font-bold">Total Progress</span>
-          <span className="text-primary font-bold">45%</span>
+          <span className="text-primary font-bold">0%</span>
         </div>
         <div className="w-full bg-white/5 rounded-full h-3 overflow-hidden">
           <motion.div 
             initial={{ width: 0 }}
-            animate={{ width: '45%' }}
+            animate={{ width: '0%' }}
             className="h-full bg-gradient-primary rounded-full"
           />
         </div>
